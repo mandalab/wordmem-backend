@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 const path = require('path');
@@ -8,6 +9,7 @@ const Participant = require('./Participant');
 const Survey = require('./Survey');
 
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.urlencoded({
     extended: true
