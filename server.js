@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const fs = require('fs');
+const https = require('https');
 const Participant = require('./Participant'); 
 const Survey = require('./Survey');
 
@@ -12,10 +14,19 @@ app.use(bodyParser.urlencoded({
 
 const port = process.env.PORT || 5000;
 
+// SSL certificate paths
+const privateKey = fs.readFileSync(path.join(__dirname, 'certs', 'key.pem'), 'utf8');
+const certificate = fs.readFileSync(path.join(__dirname, 'certs', 'certificate.pem'), 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
+
 const dbURI = 'mongodb+srv://prajneya:Fbj8y4ZvqFBjntXi@cluster0.fgtq1uv.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then((result) => app.listen(port, () => console.log(`Listening on port ${port}`)))
+  .then((result) => {
+    const httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(port, () => console.log(`HTTPS server running on port ${port}`));
+  })
   .catch((err) => console.log(err));
 
 app.use(express.json());
