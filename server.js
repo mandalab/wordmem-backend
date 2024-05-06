@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({
 const port = process.env.PORT || 5000;
 
 // SSL certificate paths
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/prajneya.in/fullchain.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/prajneya.in/privkey.pem', 'utf8');
+const privateKey = fs.readFileSync('~/certs/fullchain.pem', 'utf8');
+const certificate = fs.readFileSync('~/certs/privkey.pem', 'utf8');
 
 const credentials = { key: privateKey, cert: certificate };
 
